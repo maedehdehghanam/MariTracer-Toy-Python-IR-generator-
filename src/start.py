@@ -1,4 +1,5 @@
 import sys
+import numpy as np
 
 class IR_Node: 
     def __init__(self, op, inputs):
@@ -37,6 +38,10 @@ class Tracer:
         return self.trace.record_op("less_than_check", [self.val, operand2])
     
     #universal functions operate on ndarrays in an elemnetwise fashion 
+    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+        return self.trace.record_op(ufunc.__name__,[self.val, *inputs])
+    
+    
     def __repr__(self):
         return f"{self.val}"
     
@@ -61,7 +66,7 @@ def trace_function(fn, *args):
     return output, trace.nodes    
 
 def f(x, y):
-    return x + (x * 5) + y 
+    return np.sin(x) + np.sin(y)
 
 out, trace = trace_function(f, 3.0, 5.0)
 
