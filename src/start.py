@@ -48,6 +48,7 @@ class Tracer:
     
 class Trace:
     def __init__(self):
+        self.inputs = []
         self.nodes = []
         self.counter = 0
         
@@ -60,16 +61,20 @@ class Trace:
         return Tracer(f"%{node.variable}", self)
          
     def tracing_args(self, val):
-        node =  IR_Node("assign", [val], str(self.counter))
+        self.inputs.append(f"%{self.counter}: {type(val).__name__}({val})")
         self.counter += 1
-        self.nodes.append(node)
-        return Tracer(f"%{node.variable}", self)
+        return Tracer(f"%{self.counter-1}", self)
+    def maripr(self):
+        print(f"inputs: {[a for a in self.inputs]}")
+        for node in self.nodes:
+            print(" ", node)
 
-# rewrite the code in a format that val as nodes 
 def trace_function(fn, *args):
     trace = Trace()
     traced_args =[trace.tracing_args(a) for a in args]
     output = fn(*traced_args)
+    print("IR:")
+    trace.maripr()
     return output, trace.nodes    
 
 def f(x, y):
@@ -77,19 +82,10 @@ def f(x, y):
     for i in range(3):
         z = x**bar(x,y)
     x =x*2
-    return z + y
+    z + y
 def bar(a, b):
     return a - b
 out, trace = trace_function(f, 3.0, 5.0)
 
-#TODO: handle loops
-#TODO: assign each node a variable 
-'''
-each node has its variable
-this changing variable should be implemented in the trace. 
-val should be an object rather than a string cause then we can check if its been seen or not.
-'''
 print("Output:", out)
-print("IR:")
-for node in trace:
-    print(" ", node)
+
