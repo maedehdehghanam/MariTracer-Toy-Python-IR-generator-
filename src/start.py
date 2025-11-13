@@ -2,14 +2,15 @@ import sys
 import numpy as np
 
 class IR_Node: 
-    def __init__(self, op, inputs):
+    def __init__(self, op, inputs, variable):
         self.op = op
         self.inputs = inputs
+        self.variable = variable
         
     #define the string representation 
     def __repr__(self):
         #we may have a lsit of inputs
-        return f"{self.op}:({','.join(map(str, self.inputs))})"
+        return f"%{self.variable}: {self.op}:({','.join(map(str, self.inputs))})"
 
 class Tracer:
     def __init__(self, val, trace):
@@ -48,17 +49,23 @@ class Tracer:
 class Trace:
     def __init__(self):
         self.nodes = []
+        self.counter = 0
         
     def record_op(self, op, inputs):
         raw_inputs = [a.val if isinstance(a, Tracer) else a for a in inputs]
-        node =  IR_Node(op, raw_inputs)
+        
+        node =  IR_Node(op, raw_inputs, str(self.counter))
+        self.counter += 1
         self.nodes.append(node)
-        return Tracer(f"{op}({','.join(map(str, raw_inputs))})", self)
+        return Tracer(f"%{node.variable}", self)
          
     def tracing_args(self, val):
-        return Tracer(val, self)
+        node =  IR_Node("assign", [val], str(self.counter))
+        self.counter += 1
+        self.nodes.append(node)
+        return Tracer(f"%{node.variable}", self)
 
-
+# rewrite the code in a format that val as nodes 
 def trace_function(fn, *args):
     trace = Trace()
     traced_args =[trace.tracing_args(a) for a in args]
@@ -66,10 +73,22 @@ def trace_function(fn, *args):
     return output, trace.nodes    
 
 def f(x, y):
-    return np.sin(x) + np.sin(y)
-
+    sum_man = 0
+    for i in range(3):
+        z = x**bar(x,y)
+    x =x*2
+    return z + y
+def bar(a, b):
+    return a - b
 out, trace = trace_function(f, 3.0, 5.0)
 
+#TODO: handle loops
+#TODO: assign each node a variable 
+'''
+each node has its variable
+this changing variable should be implemented in the trace. 
+val should be an object rather than a string cause then we can check if its been seen or not.
+'''
 print("Output:", out)
 print("IR:")
 for node in trace:
