@@ -64,17 +64,22 @@ class Trace:
         self.inputs.append(f"%{self.counter}: {type(val).__name__}({val})")
         self.counter += 1
         return Tracer(f"%{self.counter-1}", self)
-    def maripr(self):
-        print(f"inputs: {[a for a in self.inputs]}")
-        for node in self.nodes:
-            print(" ", node)
+        
 
+def maripr(tracer, outputs):
+    print('{',f"inputs: {[a for a in tracer.inputs]}")
+    for node in tracer.nodes:
+        print(" ", node) 
+    if outputs is None: 
+        print('}')
+    else:
+        print(f"outputs:{[output for output in outputs]}", '}')
 def trace_function(fn, *args):
     trace = Trace()
     traced_args =[trace.tracing_args(a) for a in args]
     output = fn(*traced_args)
     print("IR:")
-    trace.maripr()
+    maripr(trace, output)
     return output, trace.nodes    
 
 def f(x, y):
@@ -82,10 +87,9 @@ def f(x, y):
     for i in range(3):
         z = x**bar(x,y)
     x =x*2
-    z + y
+    return z + y, x**2
 def bar(a, b):
     return a - b
 out, trace = trace_function(f, 3.0, 5.0)
 
-print("Output:", out)
 
