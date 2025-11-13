@@ -1,7 +1,7 @@
 import sys
 import numpy as np
 import json
-from utils.common import *
+from core.common import *
 
 class Tracer:
     def __init__(self, val, trace):
