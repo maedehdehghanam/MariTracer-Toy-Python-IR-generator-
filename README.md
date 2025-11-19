@@ -23,7 +23,7 @@ Inspired by projects like [JAX](https://github.com/google/jax) and `torch.fx`, M
 
 ```bash
 git clone https://github.com/maedehdehghanam/MariTracer-Toy-Python-IR-generator-
-cd MariTracer
+cd MariTracer-Toy-Python-IR-generator-
 ```
 ### 2. Set up your enviorment
 ```
