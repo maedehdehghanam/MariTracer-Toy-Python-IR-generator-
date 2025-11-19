@@ -6,7 +6,7 @@ Inspired by projects like [JAX](https://github.com/google/jax) and `torch.fx`, M
 
 ---
 
-## 📦 Features
+## Features
 
 - 📌 **Operator Overloading:** Traces arithmetic expressions like `a + b`, `a * b`, etc.
 - 🧩 **Function Composition:** Traces nested function calls.
