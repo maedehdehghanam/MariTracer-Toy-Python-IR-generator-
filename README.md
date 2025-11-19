@@ -31,7 +31,24 @@ conda create -n maritracer python=3.10
 conda activate maritracer
 pip install -r requirements.txt
 ```
-### 3. run tests
+### 3. Install MariTracer
+```
+pip install -e .
+```
+
+### 4. Import MariTracer and use it:)
+
+```
+from MariTracer import trace_function
+
+def add(a, b):
+    return a + b
+
+output, ir = trace_function(add, 1, 2)
+print(output)
+
+```
+### (optional) run tests
 ```
 pytest -v -s tests/test_simple.py
 ```
