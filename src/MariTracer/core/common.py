@@ -10,7 +10,14 @@ class IR_Node:
 def mari_for(body, *args, a, b=None):
     if b is not None:
         for i in range(a, b):
-            body(*args, i)
+            result = body(*args, i)
+            if not isinstance(result,tuple):
+                result = (result, )
+            args = result
     else:
         for i in range(a):
-            body(*args, i)
+            result = body(*args, i)
+            if not isinstance(result,tuple):
+                result = (result, )
+            args = result
+    return args

@@ -70,6 +70,13 @@ def trace_function(fn, *args):
     print_IR(ir)
     return output, ir   
 
+def ch(b):
+    mari_for(body,b, a=2)
+def body(a, i):
+    a = a + i
+    return a
 
+o, i = trace_function(ch, 4)
+print(i)
 
 
