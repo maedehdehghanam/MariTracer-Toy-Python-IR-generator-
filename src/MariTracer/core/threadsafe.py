@@ -1,8 +1,10 @@
 import sys
 import numpy as np
 import json
-from utils.common import * 
+from  MariTracer.core.common import * 
+from MariTracer.utils.ir_saver import *
 import contextvars
+
 current_trace =  contextvars.ContextVar('current_trace')
 
 class Tracer:
@@ -63,23 +65,13 @@ class Trace:
         self.counter += 1
         return Tracer(f"%{self.counter-1}")
         
-
-def maripr(tracer, outputs):
-    data = {
-        "inputs": [repr(a) for a in tracer.inputs],
-        "body": [repr(node) for node in tracer.nodes],
-        "outputs": None if outputs is None else [repr(o) for o in outputs],
-    }
-
-    print(json.dumps(data, indent=2))
-    return data
-
+        
 def trace_function(fn, *args):
     with Trace() as trace:
         traced_args =[trace.tracing_args(a) for a in args]
         output = fn(*traced_args)
-        print("IR:")
-        maripr(trace, output)
+        ir = maripr(trace, output)
+        print_IR(ir)
     return output, trace.nodes    
 
 def f(x, y):

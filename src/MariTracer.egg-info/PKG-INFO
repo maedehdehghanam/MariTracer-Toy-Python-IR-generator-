@@ -1,0 +1,7 @@
+Metadata-Version: 2.4
+Name: MariTracer
+Version: 0.1.0
+Summary: A Python tracer and IR system
+Author: Mariana Dehghan
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
