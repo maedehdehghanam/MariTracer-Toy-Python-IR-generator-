@@ -1,3 +1,4 @@
+README.md
 pyproject.toml
 src/MariTracer/__init__.py
 src/MariTracer.egg-info/PKG-INFO
@@ -8,3 +9,4 @@ src/MariTracer/core/common.py
 src/MariTracer/core/function_based.py
 src/MariTracer/core/threadsafe.py
 src/MariTracer/utils/ir_saver.py
+tests/test_simple.py
