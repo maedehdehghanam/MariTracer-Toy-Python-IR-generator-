@@ -10,7 +10,11 @@ def two_functions(a, b):
     d = simple_add(a, b)
     result = loop_self_multiplication(d) 
     return result
-
+def dynamic_for(num, start, end):
+    result = mari_for(body, num, start, end)
+    return result
+def body(num, index):
+    return num*index
 def test_simple_add():
     output, ir = trace_function(simple_add, 0.3, 4)
     """

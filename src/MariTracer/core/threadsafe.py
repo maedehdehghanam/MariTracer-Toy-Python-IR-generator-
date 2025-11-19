@@ -8,8 +8,9 @@ import contextvars
 current_trace =  contextvars.ContextVar('current_trace')
 
 class Tracer:
-    def __init__(self, val):
+    def __init__(self, val, value):
         self.val = val
+        self.value = value
     
     def __add__(self, operand2):
         return current_trace.get().record_op("add", [self.val, operand2])
@@ -58,12 +59,12 @@ class Trace:
         node =  IR_Node(op, raw_inputs, str(self.counter))
         self.counter += 1
         self.nodes.append(node)
-        return Tracer(f"%{node.variable}")
+        return Tracer(f"%{node.variable}", None)
          
-    def tracing_args(self, val):
-        self.inputs.append(f"%{self.counter}: {type(val).__name__}({val})")
+    def tracing_args(self, value):
+        self.inputs.append(f"%{self.counter}: {type(value).__name__}({value})")
         self.counter += 1
-        return Tracer(f"%{self.counter-1}")
+        return Tracer(f"%{self.counter-1}", value)
         
         
 def trace_function(fn, *args):
@@ -71,18 +72,7 @@ def trace_function(fn, *args):
         traced_args =[trace.tracing_args(a) for a in args]
         output = fn(*traced_args)
         ir = maripr(trace, output)
-        #print_IR(ir)
+        print_IR(ir)
     return output, ir    
 
-def f(x, y):
-    sum_man = 0
-    for i in range(3):
-        z = x**bar(x,y)
-    x =x*2
-    return z + y, x**2
-def bar(a, b):
-    return a - b
-
-out, ir = trace_function(f, 3.0, 5.0)
-print(out)
 

@@ -1,13 +1,14 @@
 import sys
 import numpy as np
 import json
-from common import *
 from MariTracer.utils.ir_saver import *
+from common import *
 
 class Tracer:
-    def __init__(self, val, trace):
+    def __init__(self, val, trace, value):
         self.trace = trace
         self.val = val
+        self.value = value
     
     def __add__(self, operand2):
         return self.trace.record_op("add", [self.val, operand2])
@@ -50,12 +51,12 @@ class Trace:
         node =  IR_Node(op, raw_inputs, str(self.counter))
         self.counter += 1
         self.nodes.append(node)
-        return Tracer(f"%{node.variable}", self)
+        return Tracer(f"%{node.variable}", self, None)
          
-    def tracing_args(self, val):
-        self.inputs.append(f"%{self.counter}: {type(val).__name__}({val})")
+    def tracing_args(self, value):
+        self.inputs.append(f"%{self.counter}: {type(value).__name__}({value})")
         self.counter += 1
-        return Tracer(f"%{self.counter-1}", self)
+        return Tracer(f"%{self.counter-1}", self, value)
         
 def trace_function(fn, *args):
     trace = Trace()
@@ -70,13 +71,5 @@ def trace_function(fn, *args):
     print_IR(ir)
     return output, ir   
 
-def ch(b):
-    mari_for(body,b, a=2)
-def body(a, i):
-    a = a + i
-    return a
-
-o, i = trace_function(ch, 4)
-print(i)
 
 
