@@ -33,5 +33,5 @@ pip install -r requirements.txt
 ```
 ### 3. run tests
 ```
-pytest -v
+pytest -v -s tests/test_simple.py
 ```
