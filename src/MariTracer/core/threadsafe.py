@@ -71,8 +71,8 @@ def trace_function(fn, *args):
         traced_args =[trace.tracing_args(a) for a in args]
         output = fn(*traced_args)
         ir = maripr(trace, output)
-        print_IR(ir)
-    return output, trace.nodes    
+        #print_IR(ir)
+    return output, ir    
 
 def f(x, y):
     sum_man = 0
@@ -83,6 +83,6 @@ def f(x, y):
 def bar(a, b):
     return a - b
 
-out, trace = trace_function(f, 3.0, 5.0)
-print(trace)
+out, ir = trace_function(f, 3.0, 5.0)
+print(out)
 

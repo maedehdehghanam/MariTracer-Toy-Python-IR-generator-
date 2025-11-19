@@ -2,7 +2,7 @@ import sys
 import numpy as np
 import json
 from common import *
-from MariTracer.utils.ir_saver import save_ir
+from MariTracer.utils.ir_saver import *
 
 class Tracer:
     def __init__(self, val, trace):
@@ -61,19 +61,15 @@ def trace_function(fn, *args):
     trace = Trace()
     traced_args =[trace.tracing_args(a) for a in args]
     output = fn(*traced_args)
+    #maripr works with tuples
+    if not isinstance(output, tuple):
+        output = (output,)
+
     print("IR:")
     ir = maripr(trace, output)
     print_IR(ir)
-    return output, trace.nodes    
+    return output, ir   
 
-def f(x, y):
-    sum_man = 0
-    for i in range(3):
-        z = x**bar(x,y)
-    x =x*2
-    return z + y, x**2
-def bar(a, b):
-    return a - b
-out, trace = trace_function(f, 3.0, 5.0)
+
 
 
