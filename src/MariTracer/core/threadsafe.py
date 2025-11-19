@@ -71,6 +71,9 @@ def trace_function(fn, *args):
     with Trace() as trace:
         traced_args =[trace.tracing_args(a) for a in args]
         output = fn(*traced_args)
+        if not isinstance(output, tuple):
+            output = (output,)
+        print("IR:")
         ir = maripr(trace, output)
         print_IR(ir)
     return output, ir    

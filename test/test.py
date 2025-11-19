@@ -1,3 +1,6 @@
+from MariTracer.core.threadsafe import *
+from MariTracer.core.mari_lang import *
+
 def simple_add(a, b):
     return a + b; 
 
@@ -8,18 +11,45 @@ def static_loop_self_multiplication(a):
 
 def two_functions(a, b):
     d = simple_add(a, b)
-    result = loop_self_multiplication(d) 
+    result = static_loop_self_multiplication(d) 
     return result
-def dynamic_for(num, start, end):
-    result = mari_for(body, num, start, end)
+
+def dynamic_for(num, s):
+    result = mari_for(body, num, start=s, end = 6)
     return result
+
 def body(num, index):
     return num*index
+
+def test_dynamic_for():
+    output, ir = trace_function(dynamic_for, 10, 3)
+    """
+    # num * 3 * 4 * 5 
+    for i in range(start,6)
+        num = num * i 
+    """
+    
+    expected_ir = {
+        "inputs": [
+            "'%0: int(10)'", #num
+            "'%1: int(3)'"  #start_range 
+        ],
+        "body": [
+            "%2: mul:(%0,3)",
+            "%3: mul:(%2,4)",
+            "%4: mul:(%3,5)"
+        ],
+        "outputs": [
+            "%4"
+        ]
+    }
+    assert ir == expected_ir
+   
+    
 def test_simple_add():
     output, ir = trace_function(simple_add, 0.3, 4)
-    """
-    the expected is: 
-    {
+    
+    expected_ir = {
         "inputs": [
             "'%0: float(0.3)'",
             "'%1: int(4)'"
@@ -31,16 +61,13 @@ def test_simple_add():
             "%2"
         ]
     }
-    """
-    assert str(ir["inputs"]) == str(["%0: float(0.3)", "%1: int(4)"])
-    assert str(ir["body"]) == str(['%2: add:(%0,%1)'])
-    assert str(ir["outputs"]) == str(['%2'])
-
+    
+    assert expected_ir == ir
 def test_static_loop_self_multiplication():
     output, ir = trace_function(static_loop_self_multiplication, 2)
-    """
-    the expected IR isL 
-        {
+    
+    #the expected IR isL 
+    expected_ir = {
             "inputs": [
                 "'%0: int(2)'"
             ],
@@ -53,16 +80,12 @@ def test_static_loop_self_multiplication():
                 "%3"
             ]
         }
-    """
-    assert str(ir["inputs"]) == str(["'%0: int(2)'"])
-    assert str(ir["body"]) == str(["%1: mul:(%0,%0)", "%2: mul:(%1,%1)", "%3: mul:(%2,%2)"])
-    assert str(ir["outputs"]) == str(['%3'])
+    assert expected_ir  == ir
 
 def test_two_functions():
     output, ir = trace_function(two_functions, 3, 5)
-    """
-    the expected IR is: 
-    {
+    
+    expected_ir ={
         "inputs": [
             "'%0: int(3)'",
             "'%1: int(5)'"
@@ -77,7 +100,5 @@ def test_two_functions():
             "%5"
         ]
     }
-    """
-    assert str(ir["inputs"]) == str(["'%0: int(3)'", "'%1: int(5)'"])
-    assert str(ir["body"]) == str(["%2: add:(%0,%1)", "%3: mul:(%2,%2)", "%4: mul:(%3,%3)", "%5: mul:(%4,%4)"])
-    assert str(ir["outputs"]) == str(['%5'])
+    
+    assert (ir) == expected_ir

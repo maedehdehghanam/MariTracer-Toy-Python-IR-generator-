@@ -2,7 +2,7 @@ import sys
 import numpy as np
 import json
 from MariTracer.utils.ir_saver import *
-from common import *
+from MariTracer.core.common import *
 
 class Tracer:
     def __init__(self, val, trace, value):
