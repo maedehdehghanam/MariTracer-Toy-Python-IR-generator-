@@ -1,19 +1,22 @@
-[build-system]
-requires = ["setuptools>=61"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "MariTracer"
-version = "0.1.0"
-description = "A Python tracer and IR system"
+version = "0.0.1"
+description = "A toy IR tracer for Python programs"
 authors = [
-    { name = "Mariana Dehghan" }
+  { name="Your Name", email="your@email.com" }
 ]
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.8"
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/MariTracer"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
+packages = ["MariTracer"]
 package-dir = {"" = "src"}
-
-[tool.setuptools.packages.find]
-where = ["src"]
