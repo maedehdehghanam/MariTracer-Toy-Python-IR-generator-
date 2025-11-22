@@ -35,7 +35,7 @@ class Tracer:
     
     #universal functions operate on ndarrays in an elemnetwise fashion 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-        return self.trace.record_op(ufunc.__name__,[self.val, *inputs])
+        return current_trace.get().record_op(ufunc.__name__,[self.val, *inputs])
     
     
     def __repr__(self):
