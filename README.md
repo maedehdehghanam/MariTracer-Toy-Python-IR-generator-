@@ -37,7 +37,7 @@ def my_func(num, s):
 """
 ```
 With mari_for, we rewrite the loop in a traceable form:
-```
+```python
 def my_func(num, s):
     # Performs: num * s * (s+1) * ... * 5
     for_result, = mari_for(body, num, start=s, end=6)
@@ -63,7 +63,7 @@ outputs:
 ## 2. Supports multithread tracing
 each thread has its own independent trace without interfering with others.
 ### Example: 
-```
+```python
 import threading
 from MariTracer import trace_function
 
@@ -103,19 +103,19 @@ git clone https://github.com/maedehdehghanam/MariTracer-Toy-Python-IR-generator-
 cd MariTracer-Toy-Python-IR-generator-
 ```
 ### 2. Set up your enviorment
-```
+```bash
 conda create -n maritracer python=3.10
 conda activate maritracer
 pip install -r requirements.txt
 ```
 ### 3. Install MariTracer
-```
+```bash
 pip install -e .
 ```
 
 ### 4. Import MariTracer and use it:)
 
-```
+```python
 from MariTracer import trace_function
 
 def add(a, b):
@@ -126,6 +126,6 @@ print(output)
 
 ```
 ### (optional) run tests
-```
+```bash
 pytest -v -s tests/test_simple.py
 ```
