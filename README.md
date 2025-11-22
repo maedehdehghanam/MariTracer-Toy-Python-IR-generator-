@@ -38,6 +38,9 @@ def my_func(num, s):
 ```
 With mari_for, we rewrite the loop in a traceable form:
 ```python
+from MariTracer import trace_function
+from MariTracer import mari_for
+
 def my_func(num, s):
     # Performs: num * s * (s+1) * ... * 5
     for_result, = mari_for(body, num, start=s, end=6)
@@ -50,15 +53,21 @@ output, mariPR =  trace_function(my_func, 10, 3)
 ```
 This will produce an IR:
 ```
-inputs:
-  %0: int(10)
-  %1: int(3)
-body:
-  %2: mul:(%0,3)
-  %3: mul:(%2,4)
-  %4: mul:(%3,5)
-outputs:
-  %4
+{
+  "inputs": [
+    "'%0: int(10)'",
+    "'%1: int(3)'"
+  ],
+  "body": [
+    "%2: mul:(%0,3)",
+    "%3: mul:(%2,4)",
+    "%4: mul:(%3,5)",
+    "%5: log:(%4,%4)"
+  ],
+  "outputs": [
+    "%5"
+  ]
+}
 ```
 ## 2. Supports multithread tracing
 each thread has its own independent trace without interfering with others.
@@ -78,9 +87,6 @@ def compute(a, b):
 def thread_job(id, a, b):
     print(f"[Thread {id}] Starting")
     output, ir = trace_function(compute, a, b)
-    print(f"[Thread {id}] Output: {output}")
-    print(f"[Thread {id}] IR:")
-    print(ir)
     print("-" * 40)
 
 threads = []
@@ -93,6 +99,34 @@ for t in threads:
     t.join()
 
 ```
+we will have:
+```bash
+.
+.
+(Thread 0-2)
+.
+
+[Thread 3] Starting
+IR:
+{
+  "inputs": [
+    "'%0: int(4)'",
+    "'%1: int(5)'"
+  ],
+  "body": [
+    "%2: mul:(%0,%1)",
+    "%3: add:(%2,3)"
+  ],
+  "outputs": [
+    "%3"
+  ]
+}
+.
+.
+(Thread 4)
+.
+```
+
 ---
 ## 🚀 Getting Started
 
