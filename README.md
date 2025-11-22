@@ -122,8 +122,6 @@ def add(a, b):
     return a + b
 
 output, ir = trace_function(add, 1, 2)
-print(output)
-
 ```
 ### (optional) run tests
 ```bash
