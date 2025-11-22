@@ -1,0 +1,2 @@
+-e git+https://github.com/maedehdehghanam/MariTracer-Toy-Python-IR-generator-@cd05be26ba67d801f3d5877daa10902f52b0fd03#egg=MariTracer
+numpy==2.2.6
