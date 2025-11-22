@@ -18,8 +18,8 @@ Inspired by projects like [JAX](https://github.com/google/jax) and `torch.fx`, M
 ---
 ## 1. Custom primitves
 MariTracer has it's own primitive to trace input objects. 
-# Example: 
-## 🔁 Example: Tracing a Loop with `mari_for`:
+
+### Example: Tracing a Loop with `mari_for`:
 
 `mari_for` is a loop primitive that allows MariTracer to trace repeated computations even when Python’s `for` loop cannot operate directly on `Tracer` objects.
 
@@ -62,6 +62,7 @@ outputs:
 ```
 ## 2. Supports multithread tracing
 each thread has its own independent trace without interfering with others.
+### Example: 
 ```
 import threading
 from MariTracer import trace_function
